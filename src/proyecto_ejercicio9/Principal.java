@@ -5,6 +5,9 @@
  */
 package proyecto_ejercicio9;
 
+import javax.swing.JOptionPane;
+import jdk.nashorn.internal.scripts.JO;
+
 /**
  *
  * @author GABRIEL
@@ -44,24 +47,46 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("ALQUILER - TARJETAS PARA LLAMADAS");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 18, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("Digite el monto inicial:");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+
+        txtMontoI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMontoIKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtMontoI, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 180, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel3.setText("Digite el monto final:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
+
+        txtMontoF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMontoFKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtMontoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 180, 30));
 
         cmdBorrar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBorrarActionPerformed(evt);
+            }
+        });
         jPanel1.add(cmdBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 150, 80, 30));
 
         cmdCalcular1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cmdCalcular1.setText("Calcular");
+        cmdCalcular1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdCalcular1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(cmdCalcular1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 80, 30));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -84,6 +109,78 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
+        // TODO add your handling code here:
+        txtMontoI.setText("");
+        txtMontoF.setText("");
+        txtCosto.setText("");
+        txtMontoI.requestFocusInWindow();
+    }//GEN-LAST:event_cmdBorrarActionPerformed
+
+    private void cmdCalcular1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcular1ActionPerformed
+        // TODO add your handling code here:
+        if (txtMontoI.getText().isEmpty() &&txtMontoF.getText().isEmpty() ) {
+            JOptionPane.showMessageDialog(this, "Campos vacíos. Por favor llénelos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtMontoI.requestFocusInWindow();
+        }
+        else if (txtMontoI.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite el monto inicial", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtMontoI.requestFocusInWindow();
+        }
+        else if (txtMontoF.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite el monto final", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtMontoF.requestFocusInWindow();
+        }
+        else if (txtMontoI.getText().equals(".")) {
+            JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtMontoI.setText("");
+            txtMontoI.requestFocusInWindow();
+        }
+        else if (txtMontoF.getText().equals(".")) {
+            JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtMontoF.setText("");
+            txtMontoF.requestFocusInWindow();
+        }
+        else if (txtMontoI.getText().equals(".") && txtMontoF.getText().equals(".")) {
+            JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtMontoI.setText("");
+            txtMontoF.setText("");
+            txtMontoI.requestFocusInWindow();
+        }
+        else {
+            double mI, mF, mC, costoLlamada;
+            mI = Double.parseDouble(txtMontoI.getText());
+            mF = Double.parseDouble(txtMontoF.getText());
+            mC = mI - mF;
+            costoLlamada = (mC * 0.20) + mC;
+            txtCosto.setText(""+costoLlamada);
+        }
+    }//GEN-LAST:event_cmdCalcular1ActionPerformed
+
+    private void txtMontoIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoIKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar(); 
+        if(!Character.isDigit(c) && c != '.') { 
+              getToolkit().beep(); 
+              evt.consume(); 
+        }
+        if (c == '.' && txtMontoI.getText().contains(".")) {
+            evt.consume(); 
+        }
+    }//GEN-LAST:event_txtMontoIKeyTyped
+
+    private void txtMontoFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoFKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (!Character.isDigit(c) && c!='.') {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (c == '.' && txtMontoF.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtMontoFKeyTyped
 
     /**
      * @param args the command line arguments
